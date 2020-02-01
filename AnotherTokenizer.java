@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.*; 
 
   public class AnotherTokenizer
@@ -13,11 +15,11 @@ import java.io.*;
      FileReader fr = new FileReader("test1.lua");
       BufferedReader br = new BufferedReader(fr);
       StreamTokenizer streamtokenizer = new StreamTokenizer(br);
-      int [] a = new int [99];
+      List<String> tokens = new ArrayList<String>();
 
       streamtokenizer.eolIsSignificant(true);
   
-
+      String token = null;
       int i = 0;
       int t;
       while((t = streamtokenizer.nextToken()) != StreamTokenizer.TT_EOF)
@@ -31,15 +33,25 @@ import java.io.*;
             //print words    
        case StreamTokenizer.TT_WORD: 
                 System.out.print(streamtokenizer.sval + " "); 
+                token = streamtokenizer.sval;
+                tokens.add(token);
                 break;
               //print numbers
         case StreamTokenizer.TT_NUMBER:
                System.out.print(streamtokenizer.nval + " ");
+               token = streamtokenizer.sval;
+                tokens.add(token);
                break;
             //prints everything inside quotes   
         case '\"':
                System.out.print('"' + streamtokenizer.sval + '"');
+               token = streamtokenizer.sval;
+                tokens.add(token);
                break;
+       // case '"':
+       //       System.out.println( StrToken(TType.QUOT, streamtokenizer.sval));
+         //     break;
+              
                //ignores bracket
         case '{':
           streamtokenizer.nextToken();
@@ -53,10 +65,23 @@ import java.io.*;
             //  break;
         default:
                     System.out.print((char) t );
-       
+                    token = String.valueOf((char)t);
+                    tokens.add(token);
+        
       } 
-      
+
+
       }
+      //prints out the arraylist
+      for (int k= 0; k<tokens.size();k++)
+      {
+        //prints nothing if null
+        if (tokens.get(k) == null)
+         System.out.print(""); 
+       else
+       System.out.println(tokens.get(k)); 
+        }
+      
   }
   
 }
