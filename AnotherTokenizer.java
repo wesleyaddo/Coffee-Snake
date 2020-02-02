@@ -43,13 +43,16 @@ import java.io.*;
                 tokens.add(token);
                break;
             //prints everything inside quotes   
-        case '"':
+         case '"':
                token = String.valueOf((char)t);
                tokens.add(token);
                System.out.print((char) t);
                System.out.print(streamtokenizer.sval);
                token = streamtokenizer.sval;
-                tokens.add(token);
+               tokens.add(token);
+               token = String.valueOf((char)t);
+               System.out.print((char) t);
+               tokens.add(token);
                break;
                //ignores bracket
         case '{':
