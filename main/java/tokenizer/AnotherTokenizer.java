@@ -1,8 +1,9 @@
+package tokenizer;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StreamTokenizer;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.*; 
@@ -80,7 +81,7 @@ import java.io.*;
                     token = String.valueOf((char)t);
                     tokens[i][j] = token;
                     j++;
-                    
+
         
       } 
 
@@ -96,7 +97,7 @@ import java.io.*;
       System.out.print(tokens[a][b] + " ");
       else
         b++;
-          
+
   }
         System.out.println(" ");
       
