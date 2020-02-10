@@ -45,37 +45,16 @@ public class JavaTokens
       put("//", "COMMENT_LINE");
       put("/*", "COMMENT_START");
       //put("*/"), "COMMENT_END");
-      put("a", "ID");
-      put("b", "ID");
-      put("c", "ID");
-      put("d", "ID");
-      put("e", "ID");
-      put("f", "ID");
-      put("g", "ID");
-      put("h", "ID");
-      put("i", "ID");
-      put("j", "ID");
-      put("k", "ID");
-      put("l", "ID");
-      put("m", "ID");
-      put("n", "ID");
-      put("o", "ID");
-      put("p", "ID");
-      put("q", "ID");
-      put("r", "ID");
-      put("s", "ID");
-      put("t", "ID");
-      put("u", "ID");
-      put("v", "ID");
-      put("w", "ID");
-      put("x", "ID");
-      put("y", "ID");
-      put("z", "ID");
+  
  }
   };
       
-            public static String getToken(String token) {
+                public static String getToken(String token) {
+              if(jtokens.containsKey(token))
                 return jtokens.get(token);
+                 else
+                   return token;
+              
             }
             //just a tester
               public static void main(String[] args) {
