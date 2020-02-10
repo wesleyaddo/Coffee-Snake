@@ -48,7 +48,7 @@ import java.io.*;
               //print numbers
         case StreamTokenizer.TT_NUMBER:
                System.out.print(streamtokenizer.nval + " ");
-               token = streamtokenizer.sval;
+               token = String.valueOf(streamtokenizer.nval);
                tokens[i][j] = token;
                 j++;
                break;
