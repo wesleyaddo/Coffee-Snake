@@ -47,7 +47,7 @@ public class MasterParser {
         //converted.appe
     }
 
-    public void acceptToken(List<String[]> tokenList){
+    public void acceptToken(:wq){
 
         int i = 0;
         String type;
