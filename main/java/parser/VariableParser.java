@@ -1,4 +1,4 @@
-package main.java.parser;//import java.util.ArrayList;
+package parser;//import java.util.ArrayList;
 //import java.util.List;
 //import java.util.ListIterator;
 //

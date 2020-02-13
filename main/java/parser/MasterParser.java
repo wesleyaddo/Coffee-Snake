@@ -1,4 +1,236 @@
-package main.java.parser;
+package parser;//import language.LanguageKeywords;
+//import language.JavaKeywords;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//
+//public class MasterParser {
+//
+//    public MasterParser(AnotherTokenizer tokenizer){
+//        //tokenTest = token;
+//        tokenizerTest = tokenizer;
+//        variableParser = new VariableParser();
+//        forLoopParser = new ForLoopParser();
+//        languageKeywords = new LanguageKeywords();
+//    }
+//    LanguageKeywords languageKeywords;
+//    VariableParser variableParser;
+//    ForLoopParser forLoopParser;
+//    Token tokenTest;
+//    AnotherTokenizer tokenizerTest;
+//
+//
+////    public MasterParser(AnotherTokenizer tokenizer, List<Token>tokenList){
+////        variableParser = new VariableParser();
+////        forLoopParser = new ForLoopParser();
+////        languageKeywords = new LanguageKeywords();
+////    }
+////    LanguageKeywords languageKeywords;
+////    VariableParser variableParser;
+////    ForLoopParser forLoopParser;
+////    Token tokenTest;
+//
+//    public void acceptToken(AnotherTokenizer tokenizer, List<Token> tokenList){
+//
+//        //tokenizer.setFirstToken(tokenTest, tokenTest.getTokenList());
+//
+//        String delimiter = null;
+//        String spaceDelimiter = null;
+//        String keyword = null;
+//        String methodCall = null;
+//
+//
+//        //tokenizer.getFirstToken();
+////        List<String> tempSent = new ArrayList<>();
+////        tempSent.add("int");
+////        tempSent.add("x");
+////        tempSent.add("=");
+////        tempSent.add("10");
+////        tempSent.add(";");
+////        token.setTokenSentence(tempSent);
+//        int i = 0;
+//
+////        tokenizerTest.addTokenSentenceToList(tempSent);
+//
+//
+////        System.out.println(tokenizer.getTokenList().isEmpty());
+//
+//
+////        tokenizerTest.getTokenList().get(0).setTokenType("int");
+////        tokenizerTest.getTokenList().get(1).setTokenType("");
+////        tokenizerTest.getTokenList().get(2).setTokenType("");
+////        tokenizerTest.getTokenList().get(3).setTokenType("");
+////        tokenizerTest.getTokenList().get(4).setTokenType("");
+//
+//        //System.out.println(tokenizer.getTokenList().get(0).getTokenType());
+//
+//        //tokenTest = tokenTest.nextToken;
+//
+////        do {
+////            //System.out.println(tokenizerTest.getTokenList().get(0).getTokenType());
+////            String type = tokenizer.getTokenList().get(0).getTokenType();
+////            //System.out.println(languageKeywords.isKeyword(String.valueOf(type)));
+////            //switch
+////            if (!languageKeywords.isKeyword(type)){
+////                System.out.println(languageKeywords.isKeyword(type));
+//////                switch (keyword) {
+////  //                  case "int":
+////                        variableParser.parse(tokenizer, tokenizer.getTokenList());
+////    //            }
+////            }
+////
+////            else if (languageKeywords.isDelimiter(type)){
+////                forLoopParser.parse(tokenTest.getTokenSentence());
+////            }
+////
+////            else if (languageKeywords.isMethodCall(type)){
+////
+////            }
+////
+////            else if (languageKeywords.isSpaceDelimiter(type)){
+////
+////            }
+////
+////            //tempSent = tempSent;
+////            i++;
+////        }while(i != tokenizer.getTokenList().size());
+////
+////    }
+////    public static void main(String[] args) {
+////        Token token = new Token();
+////        System.out.println(tokenizer.getTokenList().get(0).getTokenName());
+////    }
+//}
+//
+//
+//
+//
+//
+//
+//
+////WORKING VERSION 1
+//import language.LanguageKeywords;
+//        import language.JavaKeywords;
+//
+//        import java.util.ArrayList;
+//        import java.util.List;
+//
+//
+//public class MasterParser {
+//
+////    public MasterParser(AnotherTokenizer tokenizer){
+////        //tokenTest = token;
+////        tokenizerTest = tokenizer;
+////        variableParser = new VariableParser();
+////        forLoopParser = new ForLoopParser();
+////        languageKeywords = new LanguageKeywords();
+////    }
+////    LanguageKeywords languageKeywords;
+////    VariableParser variableParser;
+////    ForLoopParser forLoopParser;
+////    Token tokenTest;
+////    AnotherTokenizer tokenizerTest;
+//
+//
+//    public MasterParser(AnotherTokenizer tokenizer, List<Token>tokenList){
+//        //tokenTest = token;
+//        tokenizerTest = new AnotherTokenizer();
+//        variableParser = new VariableParser();
+//        forLoopParser = new ForLoopParser();
+//        languageKeywords = new LanguageKeywords();
+//    }
+//    LanguageKeywords languageKeywords;
+//    VariableParser variableParser;
+//    ForLoopParser forLoopParser;
+//    Token tokenTest;
+//    AnotherTokenizer tokenizerTest;
+//
+//
+//    public void acceptToken(){
+//
+//        //tokenizer.setFirstToken(tokenTest, tokenTest.getTokenList());
+//
+//        String delimiter = null;
+//        String spaceDelimiter = null;
+//        String keyword = null;
+//        String methodCall = null;
+//
+//
+//        //tokenizer.getFirstToken();
+//        List<String> tempSent = new ArrayList<>();
+//        tempSent.add("int");
+//        tempSent.add("x");
+//        tempSent.add("=");
+//        tempSent.add("10");
+//        tempSent.add(";");
+////        token.setTokenSentence(tempSent);
+//        int i = 0;
+//
+//        tokenizerTest.addTokenSentenceToList(tempSent);
+//
+//
+//        System.out.println(tokenizerTest.getTokenList().isEmpty());
+//
+//
+//        tokenizerTest.getTokenList().get(0).setTokenType("int");
+//        tokenizerTest.getTokenList().get(1).setTokenType("");
+//        tokenizerTest.getTokenList().get(2).setTokenType("");
+//        tokenizerTest.getTokenList().get(3).setTokenType("");
+//        tokenizerTest.getTokenList().get(4).setTokenType("");
+//
+//        System.out.println(tokenizerTest.getTokenList().get(0).getTokenType());
+//
+//        //tokenTest = tokenTest.nextToken;
+//
+//        do {
+//            //System.out.println(tokenizerTest.getTokenList().get(0).getTokenType());
+//            String type = tokenizerTest.getTokenList().get(0).getTokenType();
+//            //System.out.println(languageKeywords.isKeyword(String.valueOf(type)));
+//            //switch
+//            if (!languageKeywords.isKeyword(type)){
+//                System.out.println(languageKeywords.isKeyword(type));
+////                switch (keyword) {
+//                //                  case "int":
+//                variableParser.parse(tokenizerTest, tokenizerTest.getTokenList());
+//                //            }
+//            }
+//
+//            else if (languageKeywords.isDelimiter(type)){
+//                forLoopParser.parse(tokenTest.getTokenSentence());
+//            }
+//
+//            else if (languageKeywords.isMethodCall(type)){
+//
+//            }
+//
+//            else if (languageKeywords.isSpaceDelimiter(type)){
+//
+//            }
+//
+//            //tempSent = tempSent;
+//            i++;
+//        }while(i != tokenizerTest.getTokenList().size());
+//
+//    }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+//import language.LanguageKeywords;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,15 +239,21 @@ import java.util.List;
 
 public class MasterParser {
 
+    //LanguageKeywords languageKeywords;
     VariableParser variableParser;
     ForLoopParser forLoopParser;
+    //Token tokenTest;
+    //AnotherTokenizer tokenizer;
     SemiColonParser semiColonParser;
     PrintParser printParser;
     OpenCurlyBracket openCurlyBracket;
     CommentParser commentParser;
 
+    //public MasterParser(Token token){
     public MasterParser(){
-
+        //tokenTest = token;
+        //languageKeywords = new LanguageKeywords();
+        //tokenizer = new AnotherTokenizer();
         variableParser = new VariableParser();
         forLoopParser = new ForLoopParser();
         semiColonParser = new SemiColonParser();
@@ -47,10 +285,24 @@ public class MasterParser {
         //converted.appe
     }
 
-    public void acceptToken(:wq){
+    public void acceptToken(List<String[]> tokenList){
 
         int i = 0;
         String type;
+
+//        do {
+//            type = getFirstWord(getArrayfromArraylist(i, tokenList));
+//            switch (type){
+//                case "int":
+//                    variableParser.parse(getArrayfromArraylist(i, tokenList));
+//                    break;
+//
+//                case ";":
+//
+//            }
+//            i++;
+//        }while(i!=tokenList.size());
+
 
         for (i=0; i <= tokenList.size()-1; i++){
             type = getFirstWord(getArrayfromArraylist(i, tokenList));
@@ -84,6 +336,11 @@ public class MasterParser {
                     break;
             }
         }
+        //}while(!tokenTest.getLastToken());
+
+
+        //System.out.println(tokenList);
+        //showArraylistArrays(tokenList);
     }
 
 
@@ -126,8 +383,10 @@ public class MasterParser {
         tokenList.add(tokenE);
         tokenList.add(tokenF);
 
+
         masterParser.acceptToken(tokenList);
     }
+
 }
 
 
