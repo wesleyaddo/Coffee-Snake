@@ -38,7 +38,7 @@ public class Tokenizer
 
     public List<String> convertLineToTokenSentence(String line)
     {
-        String[] array = line.split("(?=;)|(?<=;)");
+        String[] array = line.split("(?=;)|(?<=;)|(?=[{])|(?<=[{])|(?=})|(?<=})");
 
         for(String element: array)
         {
@@ -62,7 +62,13 @@ public class Tokenizer
 
 
     public String[] convertTokenSentenceToTokenWords(String javaLine){
-        String[] tokens = javaLine.split("\\s+");
+        String[] tokens = javaLine.split("\\s+|(?=[(])|(?<=[(])|(?=[)])|(?<=[)])|(?=\")|(?<=\")|" +
+                "(?=,)|(?<=,)" );
+
+        for(String element: tokens)
+        {
+            System.out.println(element);
+        }
         return tokens;
     }
 
@@ -141,12 +147,9 @@ public class Tokenizer
 
     public static void main(String[] args) {
         Tokenizer tokenizer = new Tokenizer();
-//        String[] test1 = tokenizer.convertTokenSentenceToTokenWords("int x = 5 ;");
-//
-//        for(String test: test1){
-//            System.out.println(test);
-//        }
 
-        tokenizer.convertLineToTokenSentence("int x = 15;");
+
+        tokenizer.convertLineToTokenSentence("for(int i=0;i>10;i++)");
+        tokenizer.convertTokenSentenceToTokenWords("for(int i=0 ; i>10 ; i++)");
     }
 }
