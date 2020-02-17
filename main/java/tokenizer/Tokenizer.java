@@ -1,87 +1,155 @@
 package tokenizer;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tokenizer
 {
-    public static void main(String args[])throws Exception
+    Token firstToken;
+    Token previousToken;
+
+    public Tokenizer()
     {
-      try  {
-        LinkedList<Token> tokList = new LinkedList<>();
-        Scanner userinput = new Scanner(System.in);
-        System.out.print("Enter name of file: ");
-        String inputstring = userinput.next();
-        byte[] stuff = Files.readAllBytes(Paths.get(inputstring));
-
-        String[] testArr;
-        
-        //Break string down and put each word in test array
-        testArr = seperateString(new String(stuff));
-
-        //Create token object
-        Token tokTest1 = new Token();
-        
-        //Set word in test array as token name
-        tokTest1.setTokenName(testArr[2]);
-        
-        //Set token type
-        tokTest1.setTokenType("string");
-        
-        //Print token name and type
-        System.out.println(tokTest1.getTokenName());
-        System.out.println(tokTest1.getTokenType());
-        
-        Token tokTest2 = new Token();
-        tokTest2.setTokenName(testArr[0]);
-        
-        //Put token objects in token Linked List
-        tokList.push(tokTest2);
-        tokList.push(tokTest1);
-
-        //Print token name of token object in Linked List position 1
-        System.out.println("Token name in token linked list at position 1: " + tokList.get(1).getTokenName());
-    } catch (IOException e){
-      System.out.println(e);
- }
+        firstToken = null;
+        previousToken = null;
     }
 
-    public static String[] seperateString(String fullString)
+    public List<String> readFileLineByLine()
     {
-        String[] arrOfStr = fullString.split(" ", -1);
-        
-        int i = 0;
-
-        for (String a : arrOfStr){
-            System.out.println("Word in string array position " + i + ": " + a);
-            i++;
+        List<String> javaCode = new ArrayList<>();
+        try (BufferedReader javaCodeFileReader = new BufferedReader(new FileReader("javaCode.txt")))
+        {
+            String sCurrentLine;
+            while ((sCurrentLine = javaCodeFileReader.readLine()) != null)
+            {
+                javaCode.add(sCurrentLine);
+            }
+        } catch (IOException e)
+        {
+            e.printStackTrace();
         }
 
-        return arrOfStr;
+        return javaCode;
+    }
+
+    public List<String> convertLineToTokenSentence(String line)
+    {
+        String[] array = line.split("(?=;)|(?<=;)|(?=[{])|(?<=[{])|(?=})|(?<=})");
+
+        for(String element: array)
+        {
+            System.out.println(element);
+        }
+
+        return Arrays.asList(array);
+
+    }
+
+    public List<String> assembleTokenSentences(List<String> javaLines)
+    {
+        List<String> tokenList = new ArrayList<>();
+        javaLines.stream().forEach(javaLine ->
+        {
+            tokenList.addAll(convertLineToTokenSentence(javaLine));
+        });
+
+        return tokenList;
     }
 
 
-    static class Token
+    public String[] convertTokenSentenceToTokenWords(String javaLine){
+        String[] tokens = javaLine.split("\\s+|(?=[(])|(?<=[(])|(?=[)])|(?<=[)])|(?=\")|(?<=\")|" +
+                "(?=,)|(?<=,)" );
+
+        for(String element: tokens)
+        {
+            System.out.println(element);
+        }
+        return tokens;
+    }
+
+    public void buildTokenLinkedList()
     {
-        String tokenName;
-        String tokenType;
+        List<String> tokenList = assembleTokenSentences(readFileLineByLine());
 
-        public String getTokenName() {
-            return tokenName;
+        tokenList.stream().forEach(tokenListItem ->
+        {
+            String[] tokenWords = convertTokenSentenceToTokenWords(tokenListItem);
+            Token token = new Token();
+            token.setTokens(tokenWords);
+            token.setType(labelTokenType(tokenWords));
+            if(previousToken != null)
+            {
+                previousToken.setNextToken(token);
+                previousToken = token;
+            }
+        });
+    }
+    public String labelTokenType(String[] tokens)
+    {
+        List<String> list = Arrays.asList(tokens);
+        if(list.contains("System.out.println") || list.contains("System.out.print"))
+        {
+            return "Print";
+        }
+        if(list.contains("class")){
+            return "class";
+        }
+        if(list.contains("int") || list.contains("String")  || list.contains("double") || list.contains("char") ||
+        list.contains("float") && !list.contains("for") && !list.contains("while") && !list.contains("if") &&
+        !list.contains("else"))
+        {
+            return "variable";
+        }
+        if(list.contains("else") && list.contains("if"))
+        {
+            return "elseif";
+        }
+        if(list.contains("else") && !list.contains("if"))
+        {
+            return "else";
+        }
+        if(list.contains("public") && list.contains("static") && list.contains("void") && list.contains("main"))
+        {
+            return "MainMethod";
+        }
+        if(list.contains("for"))
+        {
+            return "forloop";
+        }
+        if(list.contains("while"))
+        {
+            return "whileloop";
+        }
+        if(list.contains("if"))
+        {
+            return "if";
+        }
+        if(list.contains("{"))
+        {
+            return "openCurlyBraces";
+        }
+        if(list.contains("}"))
+        {
+            return "closeCurlyBraces";
+        }
+        if(list.contains(";"))
+        {
+            return "Semi";
         }
 
-        public void setTokenName(String tokenName) {
-            this.tokenName = tokenName;
-        }
+        return null;
+    }
 
-        public String getTokenType() {
-            return tokenType;
-        }
+    public static void main(String[] args) {
+        Tokenizer tokenizer = new Tokenizer();
 
-        public void setTokenType(String tokenType) {
-            this.tokenType = tokenType;
-        }
+
+        tokenizer.convertLineToTokenSentence("for(int i=0;i>10;i++)");
+        tokenizer.convertTokenSentenceToTokenWords("for(int i=0 ; i>10 ; i++)");
     }
 }
