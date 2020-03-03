@@ -1,1 +1,21 @@
-print("Hello World")
+class FullParserTest :	
+	def main():		
+		x = 0 
+		y = 2 
+		if x < y :			
+			for i in range(0, 3):				
+				print( x + " < " + y ) 
+
+
+		elif ( x > y :			
+			while x = = 4 :				
+				print( y + " < " + x ) 
+
+
+		else:			
+			def Print ( word , x ):				
+				print( x + " = " + y ) 
+
+
+
+

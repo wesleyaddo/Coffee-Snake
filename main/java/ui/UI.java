@@ -15,6 +15,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import parserator.ParserConnector;
+
+import java.io.FileNotFoundException;
 import java.io.File;
 import javax.tools.*;
 import java.io.*;
@@ -136,6 +139,14 @@ public class UI extends Application
         convertButton.setOnAction(actionEvent ->
         {
             scanner.writeJavaCodeToFile(getJavaTextArea().getText());
+
+            ParserConnector parserConnector = new ParserConnector();
+            try {
+                parserConnector.workflowImplementor();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
             setPythonTextArea(scanner.readPythonCodeFromFile());
 
             codeBox.getChildren().clear();
