@@ -38,15 +38,27 @@ public class Tokenizer
 
     public List<String> convertLineToTokenSentence(String line)
     {
-        String[] array = line.split("(?=;)|(?<=;)|(?=[{])|(?<=[{])|(?=})|(?<=})");
 
-        for(String element: array)
+        if(line.startsWith("for"))
         {
-            System.out.println(element);
+            String[] array = line.split("(?=[{])|(?<=[{])|(?=})|(?<=})");
+            for (String element : array) {
+
+                System.out.println(element);
+            }
+            return Arrays.asList(array);
+
         }
+    else {
+            String[] array = line.split("(?=;)|(?<=;)|(?=[{])|(?<=[{])|(?=})|(?<=})");
 
-        return Arrays.asList(array);
+          //  for (String element : array) {
 
+           //     System.out.println(element);
+         //   }
+
+            return Arrays.asList(array);
+        }
     }
 
     public List<String> assembleTokenSentences(List<String> javaLines)
@@ -62,36 +74,48 @@ public class Tokenizer
 
 
     public String[] convertTokenSentenceToTokenWords(String javaLine){
+        // space | ( | ) | " | , | > | < | = | + if next to a letter or int | - if next to a letter or int
         String[] tokens = javaLine.split("\\s+|(?=[(])|(?<=[(])|(?=[)])|(?<=[)])|(?=\")|(?<=\")|" +
-                "(?=,)|(?<=,)" );
+                "(?=,)|(?<=,)|(?=>)|(?<=>)|(?=<)|(?<=<)|(?=[=])|(?<=[=])|(?<=[a-z0-9])(?=[+])|(?<=[+])(?=[a-z0-9])|" +
+                "(?<=[a-z0-9])(?=-)|(?<=-)(?=[a-z0-9])|(?=[*])|(?<=[*])" );
 
-        for(String element: tokens)
-        {
-            System.out.println(element);
-        }
+       // for(String element: tokens)
+      //  {
+        //    System.out.println(element);
+      //  }
         return tokens;
     }
 
     public void buildTokenLinkedList()
     {
         List<String> tokenList = assembleTokenSentences(readFileLineByLine());
+        int iterator = 0;
 
-        tokenList.stream().forEach(tokenListItem ->
+        for(String tokenListItem: tokenList)
         {
             String[] tokenWords = convertTokenSentenceToTokenWords(tokenListItem);
             Token token = new Token();
             token.setTokens(tokenWords);
             token.setType(labelTokenType(tokenWords));
+            if(iterator == 0){
+                firstToken = token;
+                previousToken = token;
+                iterator++;
+            }
             if(previousToken != null)
             {
                 previousToken.setNextToken(token);
                 previousToken = token;
             }
-        });
+        }
     }
     public String labelTokenType(String[] tokens)
     {
         List<String> list = Arrays.asList(tokens);
+        if(list.contains("public") && list.contains("static") && list.contains("void") && list.contains("main"))
+        {
+            return "MainMethod";
+        }
         if(list.contains("System.out.println") || list.contains("System.out.print"))
         {
             return "Print";
@@ -99,11 +123,9 @@ public class Tokenizer
         if(list.contains("class")){
             return "class";
         }
-        if(list.contains("int") || list.contains("String")  || list.contains("double") || list.contains("char") ||
-        list.contains("float") && !list.contains("for") && !list.contains("while") && !list.contains("if") &&
-        !list.contains("else"))
+        if(list.contains("if"))
         {
-            return "variable";
+            return "if";
         }
         if(list.contains("else") && list.contains("if"))
         {
@@ -113,10 +135,7 @@ public class Tokenizer
         {
             return "else";
         }
-        if(list.contains("public") && list.contains("static") && list.contains("void") && list.contains("main"))
-        {
-            return "MainMethod";
-        }
+
         if(list.contains("for"))
         {
             return "forloop";
@@ -125,9 +144,11 @@ public class Tokenizer
         {
             return "whileloop";
         }
-        if(list.contains("if"))
+        if(list.contains("int") || list.contains("String")  || list.contains("double") || list.contains("char") ||
+                list.contains("float") && !list.contains("for") && !list.contains("while") && !list.contains("if") &&
+                        !list.contains("else"))
         {
-            return "if";
+            return "variable";
         }
         if(list.contains("{"))
         {
@@ -147,9 +168,16 @@ public class Tokenizer
 
     public static void main(String[] args) {
         Tokenizer tokenizer = new Tokenizer();
-
-
-        tokenizer.convertLineToTokenSentence("for(int i=0;i>10;i++)");
-        tokenizer.convertTokenSentenceToTokenWords("for(int i=0 ; i>10 ; i++)");
+        tokenizer.buildTokenLinkedList();
+        Token token = tokenizer.firstToken;
+        while(token.nextToken != null)
+        {
+            List<String> tempList = Arrays.asList(token.getTokens());
+            System.out.println(tempList);
+            System.out.println(token.getType());
+            token = token.getNextToken();
+        }
+//        tokenizer.convertLineToTokenSentence("for(int i=0;i>10;i++)");
+  //      tokenizer.convertTokenSentenceToTokenWords("for(int i=0 ; i-1 ; i--)");
     }
 }
