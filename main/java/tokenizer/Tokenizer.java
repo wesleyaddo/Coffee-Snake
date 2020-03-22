@@ -18,11 +18,6 @@ public class Tokenizer
         previousToken = null;
     }
 
-    public Token getFirstToken()
-    {
-        return firstToken;
-    }
-
     public List<String> readFileLineByLine()
     {
         List<String> javaCode = new ArrayList<>();
@@ -31,7 +26,7 @@ public class Tokenizer
             String sCurrentLine;
             while ((sCurrentLine = javaCodeFileReader.readLine()) != null)
             {
-                javaCode.add(sCurrentLine.trim());
+                javaCode.add(sCurrentLine);
             }
         } catch (IOException e)
         {
@@ -47,19 +42,20 @@ public class Tokenizer
         if(line.startsWith("for"))
         {
             String[] array = line.split("(?=[{])|(?<=[{])|(?=})|(?<=})");
-            for (String element : array)
-            {
-//                System.out.println(element);
+            for (String element : array) {
+
+                System.out.println(element);
             }
             return Arrays.asList(array);
 
-        } else {
+        }
+    else {
             String[] array = line.split("(?=;)|(?<=;)|(?=[{])|(?<=[{])|(?=})|(?<=})");
 
-            for (String element : array)
-            {
-//                System.out.println(element);
-            }
+          //  for (String element : array) {
+
+           //     System.out.println(element);
+         //   }
 
             return Arrays.asList(array);
         }
@@ -76,31 +72,18 @@ public class Tokenizer
         return tokenList;
     }
 
-//Added ; might remove
+
     public String[] convertTokenSentenceToTokenWords(String javaLine){
         // space | ( | ) | " | , | > | < | = | + if next to a letter or int | - if next to a letter or int
-        String[] tokens1 = javaLine.split("\\s+");
-        List<String> tokenString = new ArrayList<>();
-        for (String token: tokens1)
-        {
-            String[] array = token.split("(?=[(])|(?<=[(])|(?=[)])|(?<=[)])|" +
+        String[] tokens = javaLine.split("\\s+|(?=[(])|(?<=[(])|(?=[)])|(?<=[)])|(?=\")|(?<=\")|" +
                 "(?=,)|(?<=,)|(?=>)|(?<=>)|(?=<)|(?<=<)|(?=[=])|(?<=[=])|(?<=[a-z0-9])(?=[+])|(?<=[+])(?=[a-z0-9])|" +
-                "(?<=[a-z0-9])(?=-)|(?<=-)(?=[a-z0-9])|(?=[*])|(?<=[*])|(?=[;])|(?<=[;])|" +
-                    "(?<=[a-z0-9A-Z])(?=[/])|(?<=[/])(?=[a-z0-9A-Z])");
+                "(?<=[a-z0-9])(?=-)|(?<=-)(?=[a-z0-9])|(?=[*])|(?<=[*])" );
 
-            tokenString.addAll(Arrays.asList(array));
-        }
-
-//        String[] tokens = javaLine.split("\\s+|(?=[(])|(?<=[(])|(?=[)])|(?<=[)])|(?=\")|(?<=\")|" +
-//                "(?=,)|(?<=,)|(?=>)|(?<=>)|(?=<)|(?<=<)|(?=[=])|(?<=[=])|(?<=[a-z0-9])(?=[+])|(?<=[+])(?=[a-z0-9])|" +
-//                "(?<=[a-z0-9])(?=-)|(?<=-)(?=[a-z0-9])|(?=[*])|(?<=[*])|(?=[;])|(?<=[;])" );
-
-//        UNCOMMENT THIS TO PRINT
-        for(String element: tokenString)
-        {
-            System.out.println(element);
-        }
-        return tokenString.stream().toArray(String[]::new);
+       // for(String element: tokens)
+      //  {
+        //    System.out.println(element);
+      //  }
+        return tokens;
     }
 
     public void buildTokenLinkedList()
@@ -129,32 +112,15 @@ public class Tokenizer
     public String labelTokenType(String[] tokens)
     {
         List<String> list = Arrays.asList(tokens);
-        if(list.contains("//"))
-        {
-            return "comment";
-        }
-        if(list.contains("/*"))
-        {
-            return "startBlockComment";
-        }
-        if(list.contains("*/"))
-        {
-            return "endBlockComment";
-        }
         if(list.contains("public") && list.contains("static") && list.contains("void") && list.contains("main"))
         {
-            return "mainMethod";
-        }
-        if(list.contains("public")||list.contains("private")||list.contains("void")||list.contains("protected")||list.contains("static"))
-        {
-            return "method";
+            return "MainMethod";
         }
         if(list.contains("System.out.println") || list.contains("System.out.print"))
         {
-            return "print";
+            return "Print";
         }
-        if(list.contains("class"))
-        {
+        if(list.contains("class")){
             return "class";
         }
         if(list.contains("if"))
@@ -194,7 +160,7 @@ public class Tokenizer
         }
         if(list.contains(";"))
         {
-            return "semi";
+            return "Semi";
         }
 
         return null;
