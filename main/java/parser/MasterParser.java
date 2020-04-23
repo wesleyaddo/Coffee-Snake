@@ -4,8 +4,12 @@ import tokenizer.Token;
 import tokenizer.Tokenizer;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class MasterParser {
+    private static final Logger LOGGER = Logger.getLogger(OpenCurlyBraceParser.class.getName());
+
     Tokenizer tokenizer;
     VariableParser variableParser;
     ForLoopParser forLoopParser;
@@ -21,6 +25,8 @@ public class MasterParser {
     ElseParser elseParser;
     ClassParser classParser;
     FunctionParser functionParser;
+    DoWhileParser doWhileParser;
+    SwitchParser switchParser;
 
     public static int tab = 0;
 
@@ -38,6 +44,8 @@ public class MasterParser {
     private static final String ELSE = "else";
     private static final String CLASS = "class";
     private static final String FUNCTION = "function";
+    private static final String DOWHILE = "dowhile";
+    private static final String SWITCH = "switch";
 
     public MasterParser(){
         tokenizer = new Tokenizer();
@@ -53,19 +61,27 @@ public class MasterParser {
         ifParser = new IfParser();
         classParser = new ClassParser();
         functionParser = new FunctionParser();
+        doWhileParser = new DoWhileParser();
+
     }
 
     public void acceptToken(Token firstToken) throws FileNotFoundException {
+        LOGGER.info("Taking tokens into parser");
         Token token = firstToken;
         String type;
 
         do{
             type = token.getType();
             switch (type){
-                case VARIABLE :
+                //if type == VARIABLE
+                //variableParser.parse(tab, token.getTokens());
+                case VARIABLE:
                     variableParser.parse(tab, token.getTokens());
+                    System.out.println("HEllo");
                     break;
 
+                    //else if type == SEMICOLON
+                //
                 case SEMI_COLON:
                     //tab++;
                     semiColonParser.parse(tab, token.getTokens());
@@ -122,11 +138,20 @@ public class MasterParser {
                     functionParser.parse(tab, token.getTokens());
                     break;
 
+                case DOWHILE:
+                    functionParser.parse(tab, token.getTokens());
+                    break;
+
+                case SWITCH:
+                    switchParser.parse(tab, token.getTokens());
+                    break;
+
                 default:
                     System.out.print("");
                     break;
             }
             token = token.getNextToken();
+            //LOGGER.info( "Token: " + Arrays.asList(token.getTokens()) + '\n' + "Token type: " + token.getType() + '\n');
         }while(token != null);
     }
 
@@ -137,7 +162,7 @@ public class MasterParser {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Token token = new Token();
         Token token1 = new Token();
         Token token2 = new Token();
@@ -206,11 +231,25 @@ public class MasterParser {
 //        token.setTokens(new String[]{"class", "Tokenizeration"});
 //        token.setType(CLASS);
 //
-//        token.setTokens(new String[]{"public", "void", "disc", "(", "double", "arg1", ",", "int", "arg2", ",", "char", "arg3", ")"});
-//        token.setType(FUNCTION);
+        token.setTokens(new String[]{"public", "void", "disc", "(", "double", "arg1", ",", "int", "arg2", ",", "char", "arg3", ")"});
+        token.setType(FUNCTION);
+        token.setTokens(new String[]{"switch", "(", "HelloSwitch", ")", "{", "\n",
+                "case", "1", ":", "\n",
+                "\t", "sout('Hello 1')", ";", "\n",
+                "\t", "break", ";", "\n\n",
 
-//        MasterParser masterParser = new MasterParser();
-//        masterParser.acceptToken(token);
+                "case", "2", ":", "\n",
+                "\t", "sout('Hello 2')", ";", "\n",
+                "\t", "break", ";", "\n\n",
+
+                "default", ":", "\n",
+                "\t", "sout(Final Ans)", ";", "\n",
+                "\t", "break", ";", "\n\n",
+        });
+        token.setType(SWITCH);
+
+        MasterParser masterParser = new MasterParser();
+        masterParser.acceptToken(token);
 //        masterParser.acceptToken(token1);
 //        masterParser.acceptToken(token2);
 //        masterParser.acceptToken(token3);

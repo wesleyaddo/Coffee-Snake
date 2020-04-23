@@ -22,15 +22,18 @@ public class Dummy {
 //        }
 
 
-//    Class WhileLoops
-//    Public static void main(string args) {
-//        Int i = 0;
-//        Int x = (value)
-//        while ( int i = x,){
-//            system.out.println(“i = “ + i”)
-//            I++
+//class WhileLoops
+//{
+//    public static void main (String[]args){
+//    int i = 0;
+//    int x = 4;
+//
+//    while (i == 6) {
+//            System.out.println("i = " + i);
+//            i++;
 //        }
 //    }
+//}
 
 
 //    class IfStatement {
@@ -46,6 +49,8 @@ public class Dummy {
 //    }
 
 
+//ElseParser not showing
+//
 //    class FullParserTest {
 //        public static void main(String[] args) {
 //            int x = 0;
@@ -68,21 +73,21 @@ public class Dummy {
 }
 
 
-//    class ElseIfStatement {
-//        public static void main(String args) {
-//            int x = 0;
-//            int y = 5;
-//            if(x < y) {
-//                System.out.print(x + "<"+y);
-//            }
-//            else if (x > y) {
-//                System.out.println(y + "<" + x);
-//            }
-//            else {
-//                System.out.println(x + " = " + y);
-//            }
+//class ElseIfStatement {
+//    public static void main(String args) {
+//        int x = 0;
+//        int y = 5;
+//        if(x < y) {
+//            System.out.print(x + "<"+y);
+//        }
+//        else if (x > y) {
+//            System.out.println(y + "<" + x);
+//        }
+//        else {
+//            System.out.println(x + " = " + y);
 //        }
 //    }
+//}
 
 
 //    Class IfStatement {
@@ -99,3 +104,58 @@ public class Dummy {
 //        System.out.println( x  + “ =  “ + y);
 
 
+
+
+//
+//    int i = 1;
+//do {
+//        System.out.println(i);
+//        i++;
+//        } while ( i < 11);
+//
+//
+//
+//        i = 1
+//        while True:
+//        print(i,)
+//        i+=1
+//        if (i > 10):
+//        break
+//
+//
+//        i = 1
+//        while i < 11:
+//        print(i,)
+//        i+=1
+
+
+
+//        int i = 1;
+//        do {
+//            System.out.println(i);
+//            i++;
+//        } while ( i < 11);
+//
+//
+//
+//        i = 1
+//            while True:
+//                print(i,)
+//                i+=1
+//
+//                if (i > 10):
+//        break
+//
+//
+//        i = 1
+//        while i < 11:
+//        print(i,)
+//        i+=1
+
+//
+//switch (type)
+//        {
+//        case VARIABLE :
+//        System.out.print("Hello 1") ;
+//        break ;
+//        }
