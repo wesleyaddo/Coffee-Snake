@@ -1,24 +1,24 @@
 package ui;
 
+import javafx.scene.control.Alert.AlertType;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Dialog.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-
+import javafx.stage.Stage;
+import java.io.File;
+import javax.tools.*;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 
 public class UI extends Application
@@ -28,16 +28,18 @@ public class UI extends Application
 
     TextArea javaTextArea;
     TextArea pythonTextArea;
-
     Scanner scanner;
+
 
     private static final String CODE_CONVERT_BUTTON = "Convert";
     private static final String PROJECT_CLEAR_BUTTON = "Clear Project";
     private static final String PYTHON_SAVE_BUTTON = "Save Python File";
-    private static final String JAVA_FILE_BUTTON = "Add a Java Text File";
+    private static final String JAVA_FILE_BUTTON = "Load and Compile a Java File";
+    private static final String SAVE_JAVA_FILE = "Save Text Area as Java file";
     private static final String PROJECT_TITLE = "Coffee Snake";
     private static final String JAVA_LABEL = "Java Code";
     private static final String PYTHON_LABEL = "Python Code";
+
 
     public UI()
     {
@@ -68,6 +70,37 @@ public class UI extends Application
         this.pythonTextArea = new TextArea(pythonCode);
     }
 
+    Alert alert = new Alert(AlertType.INFORMATION);
+
+    public List<String> compileFunction(File file)
+    {
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
+        Iterable<? extends JavaFileObject> compilationUnits =
+                fileManager.getJavaFileObjectsFromFiles(Arrays.asList(file));
+
+        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+        compiler.getTask(null, fileManager, diagnostics, null, null, compilationUnits).call();
+
+        List<String> errorMessage = new ArrayList<String>();
+        Formatter formatter = new Formatter();
+        for (Diagnostic diagnostic : diagnostics.getDiagnostics())
+        {
+            errorMessage.add(diagnostic.getKind() + ": Line [" + diagnostic.getLineNumber() + "] Position [" + diagnostic.getPosition() + "]  " + diagnostic.getMessage(Locale.ROOT) + "\n");
+
+        }
+
+        //  alert.show();
+        if (errorMessage.size() < 1)
+        {
+            errorMessage.add("No Errors Found");
+        }
+        errorMessage.forEach(value -> alert.setContentText(errorMessage.toString()));
+        alert.show();
+        return errorMessage;
+    }
+
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -77,6 +110,7 @@ public class UI extends Application
         Button clearButton = new Button(PROJECT_CLEAR_BUTTON);
         Button pythonButton = new Button(PYTHON_SAVE_BUTTON);
         Button javaButton = new Button(JAVA_FILE_BUTTON);
+        Button saveJavaButton = new Button(SAVE_JAVA_FILE);
 
         javaTextArea.setPrefHeight(500);
         pythonTextArea.setPrefHeight(500);
@@ -93,12 +127,10 @@ public class UI extends Application
         javaCodeBox.setPadding(new Insets(10, 10, 10, 10));
         pythonCodeBox.setPadding(new Insets(10, 10, 10, 10));
 
-        //labelBox.getChildren().addAll(javaLabel, pythonLabel);
-
         codeBox.setPadding(new Insets(10, 10, 10, 10));
         codeBox.getChildren().addAll(javaCodeBox, pythonCodeBox);
 
-        uiBox.getChildren().addAll(codeBox, convertButton, clearButton, pythonButton, javaButton);
+        uiBox.getChildren().addAll(codeBox, javaButton, saveJavaButton, convertButton, clearButton, pythonButton);
         uiBox.setAlignment(Pos.CENTER);
 
         convertButton.setOnAction(actionEvent ->
@@ -109,9 +141,6 @@ public class UI extends Application
             codeBox.getChildren().clear();
             codeBox.getChildren().addAll(getJavaTextArea(), getPythonTextArea());
 
-            //  uiBox.getChildren().clear();
-            //  uiBox.getChildren().add(0, codeBox);
-
             uiFlowPane.getChildren().clear();
             uiFlowPane.getChildren().addAll(uiBox);
         });
@@ -121,6 +150,23 @@ public class UI extends Application
             javaTextArea.clear();
             pythonTextArea.clear();
 
+
+        });
+
+        saveJavaButton.setOnAction(actionEvent ->
+        {
+            FileChooser javaFileChooser = new FileChooser();
+
+            FileChooser.ExtensionFilter extFilter =
+                    new FileChooser.ExtensionFilter("Javafiles (*.java)", "*.java");
+            javaFileChooser.getExtensionFilters().add(extFilter);
+
+            File javaSaveFile = javaFileChooser.showSaveDialog(stage);
+
+            if (javaSaveFile != null)
+            {
+                saveJavaFile(javaTextArea.getText(), javaSaveFile);
+            }
 
         });
         pythonButton.setOnAction(actionEvent ->
@@ -143,7 +189,7 @@ public class UI extends Application
             FileChooser javaFileChooser = new FileChooser();
 
             FileChooser.ExtensionFilter extFilter =
-                    new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                    new FileChooser.ExtensionFilter("Java files (*.java)", "*.java");
             javaFileChooser.getExtensionFilters().add(extFilter);
 
             File javaFile = javaFileChooser.showOpenDialog(stage);
@@ -151,6 +197,8 @@ public class UI extends Application
             if (javaFile != null)
             {
                 javaTextArea.setText(loadJavaFile(javaFile));
+                System.out.println(compileFunction(javaFile));
+
             }
         });
 
@@ -176,6 +224,19 @@ public class UI extends Application
 
     }
 
+    private void saveJavaFile(String javaCode, File file)
+    {
+        try
+        {
+            FileWriter javaFileWriter = new FileWriter(file);
+            javaFileWriter.write(javaCode);
+            javaFileWriter.close();
+        } catch (IOException e)
+        {
+        }
+
+    }
+
     private String loadJavaFile(File javafile)
     {
         StringBuilder sb = new StringBuilder();
@@ -188,7 +249,8 @@ public class UI extends Application
             br = new BufferedReader(new FileReader(javafile));
             while ((javaCode = br.readLine()) != null)
             {
-                sb.append(javaCode + "\n");
+                sb.append(javaCode);
+                sb.append(System.getProperty("line.separator"));
             }
 
         } catch (FileNotFoundException e)
