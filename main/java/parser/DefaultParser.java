@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.Logger;
 
-public class SwitchParser {
+public class DefaultParser {
     private static final Logger LOGGER = Logger.getLogger(PrintParser.class.getName());
     public static void parse(int tab, String[]tokenWords) throws FileNotFoundException {
         try {
@@ -20,7 +20,7 @@ public class SwitchParser {
             }
 
             int pos;
-            System.out.print("case = " + tokenWords[2]);
+            System.out.println("else:");
         }
         catch(IOException e1) {
             System.out.println("Error during reading/writing");

@@ -14,6 +14,7 @@ public class MasterParser {
     VariableParser variableParser;
     ForLoopParser forLoopParser;
     SemiColonParser semiColonParser;
+    ColonParser ColonParser;
     PrintParser printParser;
     OpenCurlyBraceParser openCurlyBrace;
     CommentParser commentParser;
@@ -27,11 +28,14 @@ public class MasterParser {
     FunctionParser functionParser;
     DoWhileParser doWhileParser;
     SwitchParser switchParser;
+    CaseParser caseParser;
+    DefaultParser defaultParser;
 
     public static int tab = 0;
 
     private static final String VARIABLE = "variable";
     private static final String SEMI_COLON = "semi";
+    private static final String COLON = "colon";
     private static final String PRINT = "print";
     private static final String OPEN_CURLY_BRACES = "openCurlyBraces";
     private static final String CLOSE_CURLY_BRACES= "closeCurlyBraces";
@@ -45,13 +49,17 @@ public class MasterParser {
     private static final String CLASS = "class";
     private static final String FUNCTION = "function";
     private static final String DOWHILE = "dowhile";
+    private static final String DEFAULT = "default";
     private static final String SWITCH = "switch";
+    private static final String CASE = "case";
+
 
     public MasterParser(){
         tokenizer = new Tokenizer();
         variableParser = new VariableParser();
         forLoopParser = new ForLoopParser();
         semiColonParser = new SemiColonParser();
+        ColonParser = new ColonParser();
         printParser = new PrintParser();
         openCurlyBrace = new OpenCurlyBraceParser();
         closeCurlyBrace = new CloseCurlyBraceParser();
@@ -62,7 +70,9 @@ public class MasterParser {
         classParser = new ClassParser();
         functionParser = new FunctionParser();
         doWhileParser = new DoWhileParser();
-
+        switchParser = new SwitchParser();
+        caseParser = new CaseParser();
+        defaultParser = new DefaultParser();
     }
 
     public void acceptToken(Token firstToken) throws FileNotFoundException {
@@ -73,18 +83,18 @@ public class MasterParser {
         do{
             type = token.getType();
             switch (type){
-                //if type == VARIABLE
-                //variableParser.parse(tab, token.getTokens());
                 case VARIABLE:
                     variableParser.parse(tab, token.getTokens());
-                    System.out.println("HEllo");
                     break;
 
-                    //else if type == SEMICOLON
-                //
                 case SEMI_COLON:
                     //tab++;
                     semiColonParser.parse(tab, token.getTokens());
+                    break;
+
+                case COLON:
+                    tab++;
+                    ColonParser.parse(tab, token.getTokens());
                     break;
 
                 case PRINT:
@@ -144,6 +154,14 @@ public class MasterParser {
 
                 case SWITCH:
                     switchParser.parse(tab, token.getTokens());
+                    break;
+
+                case CASE:
+                    caseParser.parse(tab, token);
+                    break;
+
+                case DEFAULT:
+                    defaultParser.parse(tab, token.getTokens());
                     break;
 
                 default:
@@ -233,20 +251,34 @@ public class MasterParser {
 //
         token.setTokens(new String[]{"public", "void", "disc", "(", "double", "arg1", ",", "int", "arg2", ",", "char", "arg3", ")"});
         token.setType(FUNCTION);
-        token.setTokens(new String[]{"switch", "(", "HelloSwitch", ")", "{", "\n",
-                "case", "1", ":", "\n",
-                "\t", "sout('Hello 1')", ";", "\n",
-                "\t", "break", ";", "\n\n",
+//        token.setTokens(new String[]{"switch", "(", "HelloSwitch", ")", "{", "\n",
+//                "case", "1", ":", "\n",
+//                "\t", "sout('Hello 1')", ";", "\n",
+//                "\t", "break", ";", "\n\n",
+//
+//                "case", "2", ":", "\n",
+//                "\t", "sout('Hello 2')", ";", "\n",
+//                "\t", "break", ";", "\n\n",
+//
+//                "default", ":", "\n",
+//                "\t", "sout(Final Ans)", ";", "\n",
+//                "\t", "break", ";", "\n\n",
+//        });
 
-                "case", "2", ":", "\n",
-                "\t", "sout('Hello 2')", ";", "\n",
-                "\t", "break", ";", "\n\n",
+        token.setTokens(new String[]{"switch", "(", "HelloSwitch", ")", "{",
+                "case", "VARIABLE", ":",
+                "int", "x", "=", "5", ";",
+                "break", ";",
 
-                "default", ":", "\n",
-                "\t", "sout(Final Ans)", ";", "\n",
-                "\t", "break", ";", "\n\n",
+                "case", "IF", ":",
+                "if", "x", ">", "5", ";",
+                "break", ";",
+
+                "default", ":",
+                "sout(Final Ans)", ";",
+                "break", ";", "}"
         });
-        token.setType(SWITCH);
+        //token.setType(SWITCH);
 
         MasterParser masterParser = new MasterParser();
         masterParser.acceptToken(token);

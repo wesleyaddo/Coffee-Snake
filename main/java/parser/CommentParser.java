@@ -16,7 +16,6 @@ public class CommentParser {
 
             LOGGER.info("Tab count: " + tab);
             for (int i = 0; i < tab; i++){
-                System.out.println("Line created");
                 System.out.print("\t");
             }
 
