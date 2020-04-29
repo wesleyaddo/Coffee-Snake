@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.geometry.Orientation;
 import javafx.scene.control.Alert.AlertType;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -7,22 +8,17 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog.*;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import parserator.ParserConnector;
 
-import java.io.FileNotFoundException;
 import java.io.File;
 import javax.tools.*;
 import java.io.*;
 import java.util.*;
-
 
 public class UI extends Application
 {
@@ -34,11 +30,11 @@ public class UI extends Application
     Scanner scanner;
 
 
-    private static final String CODE_CONVERT_BUTTON = "Convert";
+    private static final String CODE_CONVERT_BUTTON = "Convert Project";
     private static final String PROJECT_CLEAR_BUTTON = "Clear Project";
     private static final String PYTHON_SAVE_BUTTON = "Save Python File";
-    private static final String JAVA_FILE_BUTTON = "Load and Compile a Java File";
-    private static final String SAVE_JAVA_FILE = "Save Text Area as Java file";
+    private static final String JAVA_FILE_BUTTON = "Load and Compile Java File";
+    private static final String SAVE_JAVA_FILE = "Save Text as Java file";
     private static final String PROJECT_TITLE = "Coffee Snake";
     private static final String JAVA_LABEL = "Java Code";
     private static final String PYTHON_LABEL = "Python Code";
@@ -131,22 +127,21 @@ public class UI extends Application
         pythonCodeBox.setPadding(new Insets(10, 10, 10, 10));
 
         codeBox.setPadding(new Insets(10, 10, 10, 10));
+        codeBox.setBackground(new Background(new BackgroundFill(Color.LIGHTYELLOW, null, null)));
         codeBox.getChildren().addAll(javaCodeBox, pythonCodeBox);
 
-        uiBox.getChildren().addAll(codeBox, javaButton, saveJavaButton, convertButton, clearButton, pythonButton);
+        TilePane pane = new TilePane(Orientation.HORIZONTAL);
+        pane.setPadding(new Insets(45, 10, 20, 30));
+        pane.setBackground((new Background((new BackgroundFill(Color.LIGHTYELLOW, null, null)))));
+        pane.setHgap(45.0);
+        pane.getChildren().addAll(javaButton, saveJavaButton, convertButton, pythonButton, clearButton);
+
+        uiBox.getChildren().addAll(codeBox, pane);
         uiBox.setAlignment(Pos.CENTER);
 
         convertButton.setOnAction(actionEvent ->
         {
             scanner.writeJavaCodeToFile(getJavaTextArea().getText());
-
-            ParserConnector parserConnector = new ParserConnector();
-            try {
-                parserConnector.workflowImplementor();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
             setPythonTextArea(scanner.readPythonCodeFromFile());
 
             codeBox.getChildren().clear();
@@ -215,6 +210,7 @@ public class UI extends Application
 
 
         uiFlowPane.getChildren().addAll(uiBox);
+        uiFlowPane.setBackground((new Background((new BackgroundFill(Color.LIGHTYELLOW, null, null)))));
 
         Scene scene = new Scene(uiFlowPane, 1010, 700);
         stage.setTitle(PROJECT_TITLE); // Set the stage title
