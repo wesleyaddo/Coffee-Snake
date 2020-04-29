@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.Logger;
 
-public class ForLoopParser {
-    private static final Logger LOGGER = Logger.getLogger(ForLoopParser.class.getName());
+public class ElseIfParser {
+    private static final Logger LOGGER = Logger.getLogger(ElseParser.class.getName());
     public static void parse(int tab, String[]tokenWords) throws FileNotFoundException {
         try {
             PrintStream out = new PrintStream(new FileOutputStream("pythonCode.txt", true));
@@ -20,25 +20,20 @@ public class ForLoopParser {
             }
 
             int pos;
-            String num1 = null;
-            String num2 = null;
-            String num3 = null;
-
-            for (pos = 1; pos <= tokenWords.length-1; pos++) {
-                //System.out.print(tokenWords[pos] + " ");
-
-                if ((tokenWords[pos-1].equals("=")&&(tokenWords[pos+1]).equals(";"))){
-                    num1 = tokenWords[pos];
-                }
-
-                if ((num1 != null)&&((tokenWords[pos-1].equals("<")&&(tokenWords[pos+1]).equals(";")))){
-                    num2 = tokenWords[pos];
+            System.out.print("elif ");
+            for (pos = 3; pos <= tokenWords.length-2; pos++) {
+                //Add more variable type cases
+                if (tokenWords[pos] == "int" || tokenWords[pos] == "double"){
+                    System.out.print("");
+                } else {
+                    System.out.print(tokenWords[pos]+ " ");
                 }
             }
-            System.out.print("for " + tokenWords[3] + " in range(" + num1 + ", " + num2 + "):");
+            System.out.print(":");
         }
         catch(IOException e1) {
             System.out.println("Error during reading/writing");
         }
+
     }
 }

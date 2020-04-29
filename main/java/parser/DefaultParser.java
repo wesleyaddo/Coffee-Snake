@@ -1,12 +1,13 @@
 package parser;
 
-import parserator.ParserConnector;
-
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.Logger;
 
-public class MainMethodParser {
-    private static final Logger LOGGER = Logger.getLogger(MainMethodParser.class.getName());
+public class DefaultParser {
+    private static final Logger LOGGER = Logger.getLogger(PrintParser.class.getName());
     public static void parse(int tab, String[]tokenWords) throws FileNotFoundException {
         try {
             PrintStream out = new PrintStream(new FileOutputStream("pythonCode.txt", true));
@@ -18,7 +19,8 @@ public class MainMethodParser {
                 System.out.print("\t");
             }
 
-            System.out.print("def main():");
+            int pos;
+            System.out.println("else:");
         }
         catch(IOException e1) {
             System.out.println("Error during reading/writing");
